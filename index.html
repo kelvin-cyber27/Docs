@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#4f46e5" />
+<title>AdPulse — Get paid to advertise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#f6f7fb;
+  --surface:#ffffff;
+  --ink:#0f172a;
+  --muted:#64748b;
+  --line:#e6e9f0;
+  --primary:#4f46e5;
+  --primary-600:#4338ca;
+  --primary-soft:#eef2ff;
+  --success:#10b981;
+  --success-soft:#ecfdf5;
+  --gold:#f59e0b;
+  --gold-soft:#fffbeb;
+  --danger:#ef4444;
+  --radius:16px;
+  --shadow:0 1px 2px rgba(16,24,40,.06), 0 10px 28px -16px rgba(16,24,40,.25);
+  --shadow-lg:0 24px 60px -22px rgba(15,23,42,.45);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;max-width:100%}
+button{font-family:inherit}
+.hidden{display:none !important}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.center{text-align:center}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.tiny{font-size:12px}
+.full{width:100%}
+
+/* ============ LAYOUT ============ */
+.container{width:100%;max-width:1120px;margin:0 auto;padding:0 20px}
+.container.narrow{max-width:520px}
+main{padding-bottom:24px}
+
+/* ============ TOPBAR ============ */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{display:flex;align-items:center;gap:20px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800;letter-spacing:-.02em;font-size:17px}
+.brand-mark{
+  width:34px;height:34px;border-radius:11px;color:#fff;display:grid;place-items:center;
+  font-size:15px;font-weight:800;
+  background:linear-gradient(135deg,#6366f1,#0ea5e9);
+  box-shadow:0 8px 18px -8px rgba(79,70,229,.9);
+}
+.nav-desktop{display:flex;gap:4px;margin-left:12px}
+.nav-desktop a{
+  padding:8px 14px;border-radius:10px;font-size:14px;font-weight:600;
+  color:var(--muted);text-decoration:none;cursor:pointer;transition:.16s;
+}
+.nav-desktop a:hover{background:#f1f3f9;color:var(--ink)}
+.nav-desktop a.active{background:var(--primary-soft);color:var(--primary)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.wallet-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--success-soft);color:#047857;font-weight:700;font-size:13px;
+  padding:7px 12px;border-radius:999px;border:1px solid #d1fae5;
+}
+
+/* ============ BUTTONS ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:0;border-radius:12px;padding:11px 18px;
+  font-weight:600;font-size:14px;cursor:pointer;
+  transition:transform .16s, background .16s, box-shadow .16s, color .16s;
+  text-decoration:none;white-space:nowrap;
+}
+.btn-lg{padding:14px 24px;font-size:15px;border-radius:14px}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 10px 20px -12px rgba(79,70,229,1)}
+.btn-primary:hover:not(:disabled){background:var(--primary-600);transform:translateY(-1px)}
+.btn-outline{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn-outline:hover:not(:disabled){border-color:#cbd5e1;background:#fafbff}
+.btn-ghost{background:transparent;color:var(--muted)}
+.btn-ghost:hover{background:#f1f3f9;color:var(--ink)}
+.btn-success{background:var(--success);color:#fff}
+.btn-success:hover:not(:disabled){background:#059669;transform:translateY(-1px)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none !important}
+.icon-btn{
+  background:transparent;border:0;color:var(--muted);cursor:pointer;
+  width:34px;height:34px;border-radius:10px;font-size:16px;display:grid;place-items:center;
+}
+.icon-btn:hover{background:#f1f3f9;color:var(--ink)}
+
+/* ============ PILLS / BADGES ============ */
+.pill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:#fff;border:1px solid var(--line);color:var(--muted);
+  font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11.5px;font-weight:700;letter-spacing:.02em;
+  padding:4px 9px;border-radius:999px;text-transform:uppercase;
+}
+.badge-int{background:var(--gold-soft);color:#b45309;border:1px solid #fde68a}
+.badge-local{background:var(--primary-soft);color:var(--primary);border:1px solid #c7d2fe}
+.badge-done{background:var(--success-soft);color:#047857;border:1px solid #d1fae5}
+
+/* ============ HERO ============ */
+.hero{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;
+  padding:64px 0 48px;
+}
+.hero h1{
+  font-size:clamp(30px,4.4vw,50px);line-height:1.08;letter-spacing:-.035em;
+  margin:16px 0 16px;font-weight:800;
+}
+.hero h1 .grad{
+  background:linear-gradient(100deg,#4f46e5,#0ea5e9 60%,#10b981);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lead{font-size:16.5px;color:var(--muted);max-width:520px;margin:0 0 26px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap}
+.hero-stats div strong{display:block;font-size:20px;letter-spacing:-.02em}
+.hero-stats div span{font-size:12.5px;color:var(--muted)}
+
+/* hero visual */
+.hero-visual{position:relative}
+.hero-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:22px;
+  padding:20px;box-shadow:var(--shadow-lg);position:relative;z-index:2;
+}
+.hero-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.hero-card-head h4{margin:0;font-size:14px;letter-spacing:-.01em}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 0 4px rgba(16,185,129,.15)}
+.mini-row{
+  display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;
+  border:1px solid var(--line);margin-bottom:10px;background:#fcfcfe;
+}
+.mini-row:last-child{margin-bottom:0}
+.mini-avatar{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0}
+.mini-row .t{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.mini-row .s{font-size:11.5px;color:var(--muted)}
+.mini-pay{margin-left:auto;font-weight:800;font-size:14px;color:#047857}
+.floaty{
+  position:absolute;right:-14px;bottom:-18px;z-index:3;
+  background:#0f172a;color:#fff;border-radius:16px;padding:12px 16px;
+  box-shadow:0 18px 40px -18px rgba(15,23,42,.8);font-size:12.5px;
+}
+.floaty strong{display:block;font-size:17px;letter-spacing:-.02em}
+
+/* ============ SECTIONS ============ */
+.section{padding:52px 0}
+.section-head{text-align:center;max-width:600px;margin:0 auto 36px}
+.section-head h2{font-size:clamp(23px,3vw,32px);letter-spacing:-.03em;margin:0 0 10px;font-weight:800}
+.section-head p{margin:0;color:var(--muted);font-size:15px}
+
+/* how it works */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;
+  box-shadow:var(--shadow);
+}
+.step-num{
+  width:34px;height:34px;border-radius:11px;background:var(--primary-soft);color:var(--primary);
+  display:grid;place-items:center;font-weight:800;font-size:14px;margin-bottom:14px;
+}
+.step h3{margin:0 0 6px;font-size:15.5px;letter-spacing:-.01em}
+.step p{margin:0;font-size:13.5px;color:var(--muted)}
+
+/* rates */
+.rate-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.rate-card{
+  border-radius:20px;padding:26px;border:1px solid var(--line);background:var(--surface);
+  box-shadow:var(--shadow);
+}
+.rate-card h3{font-size:26px;letter-spacing:-.03em;margin:14px 0 4px}
+.rate-card p{margin:0 0 16px;font-size:13.5px;color:var(--muted)}
+.rate-card ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+.rate-card li{font-size:13.5px;color:#334155;display:flex;gap:9px;align-items:flex-start}
+.rate-card li::before{content:"✓";color:var(--success);font-weight:800;flex-shrink:0}
+.rate-int{border-color:#fde68a;background:linear-gradient(180deg,#fffdf5,#fff)}
+.rate-local{border-color:#c7d2fe;background:linear-gradient(180deg,#f8f9ff,#fff)}
+
+/* footer */
+.footer{border-top:1px solid var(--line);padding:26px 0 40px;margin-top:20px}
+.footer-inner{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--muted)}
+
+/* ============ AUTH ============ */
+.auth-wrap{display:grid;place-items:center;padding:56px 0}
+.auth-card{
+  width:100%;max-width:430px;background:var(--surface);border:1px solid var(--line);
+  border-radius:22px;padding:30px;box-shadow:var(--shadow-lg);
+}
+.auth-card h2{margin:0 0 6px;font-size:23px;letter-spacing:-.03em}
+.field{margin-top:16px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:7px}
+.field input,.field select{
+  width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);
+  background:#fbfcff;font-size:14px;font-family:inherit;color:var(--ink);
+  transition:.16s;outline:none;
+}
+.field input:focus,.field select:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(79,70,229,.1)}
+.switch-line{text-align:center;font-size:13px;color:var(--muted);margin-top:18px}
+.switch-line button{background:none;border:0;color:var(--primary);font-weight:700;cursor:pointer;font-size:13px}
+
+/* ============ ACTIVATE ============ */
+.activate-wrap{padding:48px 0 64px;display:grid;place-items:center}
+.activate-card{
+  width:100%;max-width:520px;background:var(--surface);border:1px solid var(--line);
+  border-radius:24px;padding:32px;box-shadow:var(--shadow-lg);text-align:center;
+}
+.lock-badge{
+  width:60px;height:60px;border-radius:20px;margin:0 auto 18px;
+  display:grid;place-items:center;font-size:26px;
+  background:linear-gradient(135deg,#eef2ff,#e0f2fe);border:1px solid #dbeafe;
+}
+.activate-card h2{margin:0 0 8px;font-size:24px;letter-spacing:-.03em}
+.check-list{list-style:none;padding:0;margin:22px 0;display:grid;gap:11px;text-align:left}
+.check-list li{display:flex;gap:10px;font-size:14px;color:#334155;align-items:flex-start}
+.check-list li::before{content:"✓";color:var(--success);font-weight:800}
+.fee-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 16px;border-radius:14px;background:#f8fafc;border:1px dashed var(--line);
+  font-size:14px;margin-bottom:18px;
+}
+.fee-row strong{font-size:18px;letter-spacing:-.02em}
+
+/* ============ DASHBOARD ============ */
+.page-head{padding:32px 0 22px}
+.page-head h1{margin:0 0 6px;font-size:clamp(22px,3vw,30px);letter-spacing:-.03em}
+.page-head p{margin:0;color:var(--muted);font-size:14px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat{
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;
+  box-shadow:var(--shadow);
+}
+.stat span{font-size:12.5px;color:var(--muted);font-weight:600}
+.stat strong{display:block;font-size:24px;letter-spacing:-.03em;margin-top:6px}
+.stat.accent{background:linear-gradient(135deg,#4f46e5,#6366f1);border-color:transparent;color:#fff}
+.stat.accent span{color:rgba(255,255,255,.78)}
+.stat.accent strong{color:#fff}
+
+.block{margin-top:30px}
+.block-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.block-head h2{margin:0;font-size:18px;letter-spacing:-.02em}
+
+/* campaign grid */
+.campaign-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+.campaign{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .18s, box-shadow .18s;
+}
+.campaign:hover{transform:translateY(-2px);box-shadow:0 16px 36px -22px rgba(15,23,42,.4)}
+.campaign-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.camp-avatar{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:16px}
+.campaign h3{margin:0 0 4px;font-size:15px;letter-spacing:-.015em;line-height:1.3}
+.campaign .meta{font-size:12.5px;color:var(--muted);margin:0 0 16px}
+.campaign-foot{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:auto}
+.pay-amount{font-size:20px;font-weight:800;letter-spacing:-.03em;color:#047857}
+.pay-amount.high{color:#b45309}
+.dur{font-size:12px;color:var(--muted);background:#f1f5f9;padding:4px 9px;border-radius:8px}
+
+/* filter tabs */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filter-btn{
+  border:1px solid var(--line);background:#fff;color:var(--muted);
+  padding:8px 15px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;transition:.16s;
+}
+.filter-btn:hover{border-color:#cbd5e1;color:var(--ink)}
+.filter-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* wallet */
+.wallet-hero{
+  border-radius:22px;padding:26px;color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#312e81,#4f46e5 45%,#0ea5e9);
+  box-shadow:0 22px 48px -26px rgba(79,70,229,1);
+}
+.wallet-hero::after{
+  content:"";position:absolute;width:220px;height:220px;border-radius:50%;
+  background:rgba(255,255,255,.12);right:-70px;top:-90px;
+}
+.wallet-hero span{font-size:13px;opacity:.85;font-weight:600}
+.wallet-hero h2{margin:6px 0 20px;font-size:38px;letter-spacing:-.04em}
+.wallet-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:2}
+.wallet-actions .btn-outline{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);color:#fff}
+.wallet-actions .btn-outline:hover{background:rgba(255,255,255,.26)}
+.wallet-actions .btn-primary{background:#fff;color:#312e81;box-shadow:none}
+.wallet-actions .btn-primary:hover{background:#f1f5f9}
+
+.tx-list{display:grid;gap:10px}
+.tx{
+  display:flex;align-items:center;gap:14px;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);
+}
+.tx-icon{
+  width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+  font-size:15px;flex-shrink:0;
+}
+.tx-icon.in{background:var(--success-soft);color:#047857}
+.tx-icon.out{background:#fef2f2;color:#b91c1c}
+.tx-body{min-width:0}
+.tx-body .t{font-size:13.5px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-body .s{font-size:11.5px;color:var(--muted)}
+.tx-amt{margin-left:auto;font-weight:800;font-size:14px;white-space:nowrap}
+.tx-amt.in{color:#047857}
+.tx-amt.out{color:#b91c1c}
+.empty{
+  text-align:center;padding:40px 20px;color:var(--muted);font-size:13.5px;
+  background:var(--surface);border:1px dashed var(--line);border-radius:16px;
+}
+
+/* ============ API SANDBOX ============ */
+.endpoint{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;
+  box-shadow:var(--shadow);flex-wrap:wrap;
+}
+.method{
+  font-size:11px;font-weight:800;letter-spacing:.04em;padding:4px 9px;border-radius:7px;
+  flex-shrink:0;
+}
+.method.get{background:#eff6ff;color:#1d4ed8}
+.method.post{background:#ecfdf5;color:#047857}
+.endpoint code{font-size:13px;font-weight:600;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.endpoint .desc{font-size:12px;color:var(--muted);width:100%;margin-top:-2px}
+.endpoint .btn{margin-left:auto;padding:8px 14px;font-size:12.5px;border-radius:10px}
+
+.console{
+  background:#0b1220;border-radius:16px;padding:16px;min-height:220px;max-height:460px;
+  overflow:auto;border:1px solid #1e293b;
+}
+.console .placeholder{color:#64748b;font-size:13px;text-align:center;padding:60px 10px}
+.log-entry{border-bottom:1px solid #1e293b;padding:12px 0;animation:fade .25s}
+.log-entry:last-child{border-bottom:0}
+.log-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:8px}
+.log-head code{color:#93c5fd;font-size:12.5px;font-family:ui-monospace,Menlo,monospace}
+.log-meta{margin-left:auto;color:#64748b;font-size:11px}
+.console pre{
+  margin:0;color:#a5f3fc;font-size:12px;line-height:1.55;white-space:pre-wrap;word-break:break-word;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.method.get.on-dark{background:#1e3a8a;color:#bfdbfe}
+.method.post.on-dark{background:#064e3b;color:#a7f3d0}
+
+/* ============ MODAL ============ */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:16px;
+  background:rgba(15,23,42,.55);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+  animation:fade .2s ease;overflow-y:auto;
+}
+.modal{
+  width:100%;max-width:440px;background:#fff;border-radius:22px;padding:24px;
+  box-shadow:var(--shadow-lg);animation:pop .26s cubic-bezier(.2,.9,.3,1.2);
+  max-height:calc(100vh - 32px);overflow-y:auto;
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-head h3{margin:0;font-size:18px;letter-spacing:-.02em}
+.pay-amount{font-size:38px;font-weight:800;letter-spacing:-.04em;text-align:center;line-height:1.1}
+.pay-sub{text-align:center;color:var(--muted);font-size:13px;margin:4px 0 20px}
+.pay-rows{display:grid;gap:1px;background:var(--line);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.pay-row{display:flex;justify-content:space-between;gap:14px;background:#fbfcff;padding:13px 16px;font-size:13.5px}
+.pay-row span{color:var(--muted)}
+.pay-row strong{letter-spacing:-.01em}
+.hint{
+  background:var(--primary-soft);border:1px solid #e0e7ff;color:#3730a3;
+  font-size:12.5px;padding:12px 14px;border-radius:12px;margin:0 0 16px;line-height:1.5;
+}
+.modal .btn{margin-bottom:8px}
+.modal .btn:last-child{margin-bottom:0}
+
+/* success state */
+.success-state{text-align:center;padding:8px 0}
+.success-ring{
+  width:72px;height:72px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;
+  background:var(--success-soft);border:1px solid #d1fae5;color:var(--success);font-size:32px;
+  animation:pop .4s cubic-bezier(.2,.9,.3,1.4);
+}
+.success-state h3{margin:0 0 8px;font-size:20px;letter-spacing:-.02em}
+.success-state p{margin:0 0 20px;color:var(--muted);font-size:13.5px}
+
+/* task modal */
+.task-ad{
+  border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-bottom:18px;
+}
+.task-ad-art{
+  height:130px;display:grid;place-items:center;color:#fff;font-weight:800;
+  font-size:19px;letter-spacing:-.02em;text-align:center;padding:16px;
+}
+.task-ad-copy{padding:14px 16px;font-size:13px;color:#334155;background:#fbfcff;line-height:1.55}
+.progress-track{height:8px;border-radius:999px;background:#eef2f7;overflow:hidden;margin:16px 0 8px}
+.progress-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#6366f1,#10b981);transition:width .95s linear}
+
+/* spinner */
+.spinner{
+  width:15px;height:15px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.4);border-top-color:#fff;
+  animation:spin .7s linear infinite;display:inline-block;
+}
+.spinner.dark{border-color:rgba(79,70,229,.25);border-top-color:var(--primary)}
+
+/* toast */
+#toastRoot{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;z-index:200;display:grid;gap:10px;width:calc(100% - 32px);max-width:380px}
+.toast{
+  background:#0f172a;color:#fff;padding:13px 16px;border-radius:14px;font-size:13.5px;font-weight:600;
+  box-shadow:0 18px 40px -18px rgba(15,23,42,.9);animation:toastIn .3s cubic-bezier(.2,.9,.3,1.2);
+  display:flex;align-items:center;gap:10px;
+}
+.toast.success{background:#065f46}
+.toast.error{background:#991b1b}
+
+/* tabbar mobile */
+.tabbar{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+  justify-content:space-around;
+}
+.tabbar button{
+  flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:10.5px;font-weight:700;color:var(--muted);cursor:pointer;padding:6px 2px;border-radius:12px;
+}
+.tabbar button.active{color:var(--primary)}
+.tabbar svg{width:21px;height:21px;stroke-width:2;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* animations */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes toastIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;gap:36px;padding:44px 0 32px}
+  .hero-visual{max-width:440px}
+  .steps{grid-template-columns:1fr}
+  .rate-grid{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+  .nav-desktop{display:none}
+  .tabbar{display:flex}
+  main{padding-bottom:92px}
+  .container{padding:0 16px}
+  .topbar-inner{height:58px;gap:12px}
+  .brand-name{font-size:16px}
+  .section{padding:38px 0}
+  .stat-grid{gap:12px}
+  .stat{padding:15px}
+  .stat strong{font-size:20px}
+  .wallet-hero h2{font-size:31px}
+  .hero-stats{gap:20px}
+  .floaty{right:0;bottom:-14px;padding:10px 14px}
+  .modal{padding:20px;border-radius:18px}
+  #toastRoot{bottom:96px}
+}
+@media(max-width:420px){
+  .hero-actions .btn{width:100%}
+  .campaign-grid{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .stat strong{font-size:18px}
+  .pay-amount{font-size:32px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= TOPBAR ================= -->
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="#" data-nav="landing">
+      <span class="brand-mark">A</span>
+      <span class="brand-name">AdPulse</span>
+    </a>
+    <nav class="nav-desktop hidden" id="navDesktop">
+      <a data-nav="dashboard">Dashboard</a>
+      <a data-nav="tasks">Campaigns</a>
+      <a data-nav="wallet">Wallet</a>
+      <a data-nav="api">API Sandbox</a>
+    </nav>
+    <div class="topbar-right">
+      <span class="wallet-chip hidden" id="walletChip">$0.00</span>
+      <button class="btn btn-ghost hidden" id="logoutBtn">Log out</button>
+      <button class="btn btn-primary" id="ctaTop" data-nav="auth">Get started</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= LANDING ================= -->
+  <section id="view-landing" class="view">
+    <div class="container">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="pill">🌍 International campaigns pay up to 4× more</span>
+          <h1>Get paid to <span class="grad">advertise</span> the world's brands.</h1>
+          <p class="lead">
+            Pick a campaign, view and share the advert, and get paid straight to your wallet.
+            Choose international brands for higher payouts, or local brands for quick, easy tasks.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" data-nav="auth">Create free account</button>
+            <button class="btn btn-outline btn-lg" data-nav="api">Explore API sandbox</button>
+          </div>
+          <div class="hero-stats">
+            <div><strong>128k+</strong><span>Advertisers paid</span></div>
+            <div><strong>$3.9M</strong><span>Payouts settled</span></div>
+            <div><strong>42</strong><span>Countries</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card">
+            <div class="hero-card-head">
+              <h4>Live campaigns</h4>
+              <span class="live-dot"></span>
+            </div>
+            <div class="mini-row">
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#f59e0b,#ea580c)">N</div>
+              <div>
+                <div class="t">NovaTech Launch</div>
+                <div class="s">International · United States</div>
+              </div>
+              <div class="mini-pay">$5.20</div>
+            </div>
+            <div class="mini-row">
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#0ea5e9,#2563eb)">S</div>
+              <div>
+                <div class="t">Skyline Airways</div>
+                <div class="s">International · UAE</div>
+              </div>
+              <div class="mini-pay">$6.00</div>
+            </div>
+            <div class="mini-row">
+              <div class="mini-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">M</div>
+              <div>
+                <div class="t">Mama Njeri Kitchen</div>
+                <div class="s">Local · Food &amp; Beverage</div>
+              </div>
+              <div class="mini-pay">$1.20</div>
+            </div>
+          </div>
+          <div class="floaty">
+            Today's earnings
+            <strong>$18.40</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOW IT WORKS -->
+      <div class="section">
+        <div class="section-head">
+          <h2>How AdPulse works</h2>
+          <p>Three simple steps from sign-up to your first payout.</p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h3>Activate your account</h3>
+            <p>Pay the one-time $2.00 activation fee. This unlocks every campaign, your wallet and withdrawals.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h3>Pick a campaign</h3>
+            <p>Browse international and local adverts. International brands pay significantly more per task.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h3>Get paid instantly</h3>
+            <p>Complete the view-and-share task and your earnings land in your wallet immediately.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RATES -->
+      <div class="section">
+        <div class="section-head">
+          <h2>Payout rates</h2>
+          <p>International advertisers pay more — because they reach further.</p>
+        </div>
+        <div class="rate-grid">
+          <div class="rate-card rate-int">
+            <span class="badge badge-int">International</span>
+            <h3>$3.50 – $6.00</h3>
+            <p>per completed campaign</p>
+            <ul>
+              <li>Brands from the US, EU, UAE &amp; Canada</li>
+              <li>Highest payout tier on the platform</li>
+              <li>Longer watch time (12–20 seconds)</li>
+              <li>Paid in USD, withdraw anytime</li>
+            </ul>
+          </div>
+          <div class="rate-card rate-local">
+            <span class="badge badge-local">Local</span>
+            <h3>$0.80 – $1.50</h3>
+            <p>per completed campaign</p>
+            <ul>
+              <li>Brands in your own country</li>
+              <li>Fast tasks (10–12 seconds)</li>
+              <li>Unlimited daily availability</li>
+              <li>Great for stacking quick earnings</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span>© 2024 AdPulse. All rights reserved.</span>
+        <span>Sandbox environment · no real money is transferred</span>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ================= AUTH ================= -->
+  <section id="view-auth" class="view hidden">
+    <div class="container">
+      <div class="auth-wrap">
+        <div class="auth-card">
+          <h2 id="authTitle">Create your account</h2>
+          <p class="muted small" id="authSub">Start earning from international advertisers today.</p>
+
+          <form id="authForm" autocomplete="off">
+            <div class="field" id="nameField">
+              <label for="authName">Full name</label>
+              <input id="authName" type="text" placeholder="Amina Wanjiru" required />
+            </div>
+            <div class="field">
+              <label for="authEmail">Email address</label>
+              <input id="authEmail" type="email" placeholder="you@example.com" required />
+            </div>
+            <div class="field">
+              <label for="authPass">Password</label>
+              <input id="authPass" type="password" placeholder="At least 6 characters" minlength="6" required />
+            </div>
+            <button type="submit" class="btn btn-primary full btn-lg" style="margin-top:22px" id="authSubmit">
+              Create account
+            </button>
+          </form>
+
+          <div class="switch-line">
+            <span id="switchText">Already have an account?</span>
+            <button type="button" id="switchBtn">Log in</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ACTIVATE ================= -->
+  <section id="view-activate" class="view hidden">
+    <div class="container">
+      <div class="activate-wrap">
+        <div class="activate-card">
+          <div class="lock-badge">🔒</div>
+          <h2>Activate your account</h2>
+          <p class="muted small" style="margin:0">
+            A one-time fee of <strong style="color:var(--ink)">$2.00 USD</strong> unlocks every campaign,
+            your wallet and instant withdrawals — forever.
+          </p>
+
+          <ul class="check-list">
+            <li>Access all international campaigns ($3.50 – $6.00 each)</li>
+            <li>Access all local campaigns ($0.80 – $1.50 each)</li>
+            <li>Instant wallet crediting after every task</li>
+            <li>Withdraw to mobile money or bank, min. $10.00</li>
+          </ul>
+
+          <div class="fee-row">
+            <span>Activation fee (one-time)</span>
+            <strong>$2.00</strong>
+          </div>
+
+          <button class="btn btn-primary full btn-lg" id="activateBtn">
+            Pay $2.00 &amp; activate
+          </button>
+          <p class="tiny muted center" style="margin:14px 0 0">
+            Sandbox mode · payment prompts are simulated
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DASHBOARD ================= -->
+  <section id="view-dashboard" class="view hidden">
+    <div class="container">
+      <div class="page-head">
+        <h1 id="dashGreeting">Welcome back 👋</h1>
+        <p>Here's how your advertising work is performing today.</p>
+      </div>
+      <div id="dashBody"></div>
+    </div>
+  </section>
+
+  <!-- ================= TASKS ================= -->
+  <section id="view-tasks" class="view hidden">
+    <div class="container">
+      <div class="page-head">
+        <h1>Campaigns</h1>
+        <p>Complete a campaign to get paid instantly. International campaigns pay the most.</p>
+      </div>
+      <div class="filters" id="taskFilters">
+        <button class="filter-btn active" data-filter="all">All campaigns</button>
+        <button class="filter-btn" data-filter="international">🌍 International</button>
+        <button class="filter-btn" data-filter="local">🏠 Local</button>
+      </div>
+      <div id="taskList"></div>
+    </div>
+  </section>
+
+  <!-- ================= WALLET ================= -->
+  <section id="view-wallet" class="view hidden">
+    <div class="container">
+      <div class="page-head">
+        <h1>Wallet</h1>
+        <p>Your earnings, transactions and withdrawals.</p>
+      </div>
+      <div id="walletBody"></div>
+    </div>
+  </section>
+
+  <!-- ================= API SANDBOX ================= -->
+  <section id="view-api" class="view hidden">
+    <div class="container">
+      <div class="page-head">
+        <h1>API Sandbox</h1>
+        <p>
+          Test the AdPulse payment and campaign endpoints. Payment responses return the merchant
+          <strong>name only</strong> — the destination number is never exposed to the client.
+        </p>
+      </div>
+
+      <div class="block" style="margin-top:0">
+        <div class="block-head"><h2>Endpoints</h2></div>
+        <div id="endpointList"></div>
+      </div>
+
+      <div class="block">
+        <div class="block-head">
+          <h2>Response console</h2>
+          <button class="btn btn-outline" id="clearConsole" style="padding:8px 14px;font-size:12.5px">
+            Clear
+          </button>
+        </div>
+        <div class="console" id="apiConsole">
+          <div class="placeholder">No requests yet — run an endpoint above.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= TABBAR (mobile) ================= -->
+<nav class="tabbar hidden" id="tabbar">
+  <button data-nav="dashboard" data-tab="dashboard">
+    <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+    <span>Home</span>
+  </button>
+  <button data-nav="tasks" data-tab="tasks">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg>
+    <span>Campaigns</span>
+  </button>
+  <button data-nav="wallet" data-tab="wallet">
+    <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M16 12.5h3"/></svg>
+    <span>Wallet</span>
+  </button>
+  <button data-nav="api" data-tab="api">
+    <svg viewBox="0 0 24 24"><path d="m8 16-4-4 4-4M16 8l4 4-4 4"/></svg>
+    <span>API</span>
+  </button>
+</nav>
+
+<div id="modalRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+/* =========================================================
+   AdPulse — app logic
+   ========================================================= */
+
+/* ---------------- constants ---------------- */
+const SITE_NAME = 'AdPulse';
+const ACTIVATION_FEE = 2.00;
+const MIN_WITHDRAWAL = 10.00;
+const STORE_KEY = 'adpulse_state_v1';
+
+/* ---------------- helpers ---------------- */
+const $  = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const money = n => '$' + Number(n).toFixed(2);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36));
+const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+function brandGradient(name) {
+  let h = 0;
+  for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) % 360;
+  return `linear-gradient(135deg, hsl(${h} 72% 56%), hsl(${(h + 42) % 360} 72% 44%))`;
+}
+
+/* ---------------- campaign catalogue ---------------- */
+const CAMPAIGNS = [
+  /* --- International: higher pay --- */
+  { id:'int-1', brand:'NovaTech', country:'United States', region:'international',
+    title:'Launch the new NovaBook Pro', category:'Technology', pay:5.20, duration:15,
+    copy:'Meet the NovaBook Pro — 22 hours of battery, a 3nm chip and a display that feels like paper. Pre-order today.' },
+  { id:'int-2', brand:'Skyline Airways', country:'United Arab Emirates', region:'international',
+    title:'Skyline business class offer', category:'Travel', pay:6.00, duration:20,
+    copy:'Fly business class to 40+ destinations. Lie-flat seats, chef-curated menus and priority everything. Book direct and save 30%.' },
+  { id:'int-3', brand:'Nordic Coffee Co.', country:'Sweden', region:'international',
+    title:'Nordic Cold Brew summer push', category:'Food & Beverage', pay:4.60, duration:15,
+    copy:'Slow-steeped for 18 hours. Zero sugar, 100% arabica. Nordic Cold Brew is now available in 12 new markets.' },
+  { id:'int-4', brand:'Pixel Forge', country:'Canada', region:'international',
+    title:'Indie game launch trailer', category:'Gaming', pay:3.80, duration:12,
+    copy:'A hand-drawn adventure 4 years in the making. Wishlist "Lanternfall" today and play the free demo this weekend.' },
+
+  /* --- Local: lower pay --- */
+  { id:'loc-1', brand:'Mama Njeri Kitchen', country:'Local', region:'local',
+    title:'Weekend nyama choma promo', category:'Food', pay:1.20, duration:10,
+    copy:'Family platter + 2 sides for one low price this weekend only. Order before 6pm for free delivery within 5km.' },
+  { id:'loc-2', brand:'QuickFix Hardware', country:'Local', region:'local',
+    title:'Power tools clearance sale', category:'Retail', pay:0.90, duration:10,
+    copy:'Up to 40% off drills, grinders and generators. While stocks last — visit the branch or order online.' },
+  { id:'loc-3', brand:'BrightPath Academy', country:'Local', region:'local',
+    title:'New term enrolment drive', category:'Education', pay:1.50, duration:12,
+    copy:'Enrolment for the new term is now open. Small classes, qualified teachers and a free assessment week.' },
+  { id:'loc-4', brand:'Safiri Buses', country:'Local', region:'local',
+    title:'New express route offer', category:'Transport', pay:1.10, duration:10,
+    copy:'New express departures every 2 hours. Book online, choose your seat and travel with free onboard Wi-Fi.' }
+];
+
+/* ---------------- state ---------------- */
+function defaultState() {
+  return {
+    user: null,
+    activated: false,
+    balance: 0,
+    lifetime: 0,
+    completed: [],
+    history: []
+  };
+}
+
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    return { ...defaultState(), ...parsed };
+  } catch (e) {
+    return defaultState();
+  }
+}
+
+function saveState() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+/* =========================================================
+   MOCK API LAYER  (the "sandbox")
+   ========================================================= */
+const API = {
+  log: [],
+
+  emit(entry) {
+    this.log.unshift(entry);
+    if (this.log.length > 60) this.log.pop();
+    renderApiConsole();
+  },
+
+  async call(method, endpoint, payload, handler, latency = 700) {
+    const t0 = performance.now();
+    await sleep(latency);
+    const response = handler(payload);
+    this.emit({
+      id: uid(),
+      method,
+      endpoint,
+      payload,
+      response,
+      ms: Math.round(performance.now() - t0),
+      ts: new Date().toLocaleTimeString()
+    });
+    return response;
+  },
+
+  /* POST /v1/payments/initiate
+     Returns the merchant NAME only — the destination number is never
+     included in the response payload. */
+  initiatePayment({ amount = ACTIVATION_FEE, currency = 'USD', purpose = 'account_activation' } = {}) {
+    return this.call('POST', '/v1/payments/initiate', { amount, currency, purpose }, p => ({
+      ok: true,
+      reference: 'ADP-' + uid().slice(0, 6).toUpperCase(),
+      status: 'pending',
+      amount: p.amount,
+      currency: p.currency,
+      purpose: p.purpose,
+      channel: 'mobile_money',
+      payTo: { name: SITE_NAME, type: 'merchant' },
+      expires_in: 300,
+      message: `Approve the ${SITE_NAME} prompt on your phone to complete payment.`
+    }), 900);
+  },
+
+  /* POST /v1/payments/verify */
+  verifyPayment({ reference } = {}) {
+    return this.call('POST', '/v1/payments/verify', { reference }, p => ({
+      ok: true,
+      reference: p.reference,
+      status: 'success',
+      amount: ACTIVATION_FEE,
+      currency: 'USD',
+      merchant: { name: SITE_NAME },
+      paid_at: new Date().toISOString()
+    }), 1300);
+  },
+
+  /* GET /v1/campaigns */
+  getCampaigns({ region = 'all' } = {}) {
+    return this.call('GET', '/v1/campaigns?region=' + region, { region }, p => {
+      const items = p.region === 'all' ? CAMPAIGNS : CAMPAIGNS.filter(c => c.region === p.region);
+      return {
+        ok: true,
+        count: items.length,
+        data: items.map(c => ({
+          id: c.id,
+          brand: c.brand,
+          country: c.country,
+          region: c.region,
+          payout_usd: c.pay,
+          duration_seconds: c.duration,
+          completed: state.completed.includes(c.id)
+        }))
+      };
+    }, 550);
+  },
+
+  /* POST /v1/tasks/submit */
+  submitTask({ campaignId } = {}) {
+    return this.call('POST', '/v1/tasks/submit', { campaignId }, p => {
+      const camp = CAMPAIGNS.find(c => c.id === p.campaignId);
+      if (!camp) return { ok: false, error: 'campaign_not_found' };
+      if (state.completed.includes(camp.id)) return { ok: false, error: 'already_completed' };
+      return {
+        ok: true,
+        campaign_id: camp.id,
+        brand: camp.brand,
+        credited_usd: camp.pay,
+        new_balance: Number((state.balance + camp.pay).toFixed(2)),
+        status: 'credited'
+      };
+    }, 800);
+  },
+
+  /* GET /v1/wallet */
+  getWallet() {
+    return this.call('GET', '/v1/wallet', {}, () => ({
+      ok: true,
+      balance_usd: Number(state.balance.toFixed(2)),
+      lifetime_usd: Number(state.lifetime.toFixed(2)),
+      tasks_completed: state.completed.length,
+      currency: 'USD'
+    }), 450);
+  },
+
+  /* POST /v1/withdrawals */
+  withdraw({ amount, method = 'mobile_money' } = {}) {
+    return this.call('POST', '/v1/withdrawals', { amount, method }, p => {
+      const amt = Number(p.amount);
+      if (!amt || amt < MIN_WITHDRAWAL) {
+        return { ok: false, error: 'below_minimum', minimum_usd: MIN_WITHDRAWAL };
+      }
+      if (amt > state.balance) {
+        return { ok: false, error: 'insufficient_funds', balance_usd: Number(state.balance.toFixed(2)) };
+      }
+      return {
+        ok: true,
+        reference: 'WDR-' + uid().slice(0, 6).toUpperCase(),
+        amount_usd: amt,
+        method: p.method,
+        status: 'processing',
+        eta: '1–3 business days'
+      };
+    }, 900);
+  }
+};
+
+/* =========================================================
+   ROUTING
+   ========================================================= */
+const NEEDS_USER = new Set(['dashboard', 'tasks', 'wallet', 'api', 'activate']);
+const NEEDS_ACTIVE = new Set(['dashboard', 'tasks', 'wallet']);
+
+let currentView = 'landing';
+let taskFilter = 'all';
+let taskTimerId = null;
+
+function go(view) {
+  if (NEEDS_USER.has(view) && !state.user) view = 'auth';
+  if (view === 'auth' && state.user) view = state.activated ? 'dashboard' : 'activate';
+  if (NEEDS_ACTIVE.has(view) && state.user && !state.activated) view = 'activate';
+
+  closeModal();
+  clearTaskTimer();
+
+  $$('.view').forEach(v => v.classList.toggle('hidden', v.id !== 'view-' + view));
+  currentView = view;
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+
+  updateChrome();
+  renderView(view);
+}
+
+function renderView(view) {
+  if (view === 'dashboard') renderDashboard();
+  if (view === 'tasks') renderTasks();
+  if (view === 'wallet') renderWallet();
+  if (view === 'api') { renderEndpoints(); renderApiConsole(); }
+}
+
+function updateChrome() {
+  const loggedIn = !!state.user;
+  const unlocked = loggedIn && state.activated;
+
+  $('#walletChip').classList.toggle('hidden', !loggedIn);
+  $('#walletChip').textContent = money(state.balance);
+  $('#logoutBtn').classList.toggle('hidden', !loggedIn);
+  $('#ctaTop').classList.toggle('hidden', loggedIn);
+  $('#navDesktop').classList.toggle('hidden', !unlocked);
+  $('#tabbar').classList.toggle('hidden', !unlocked);
+
+  $$('#navDesktop a').forEach(a => a.classList.toggle('active', a.dataset.nav === currentView));
+  $$('#tabbar button').forEach(b => b.classList.toggle('active', b.dataset.tab === currentView));
+}
+
+/* global nav delegation */
+document.addEventListener('click', e => {
+  const navEl = e.target.closest('[data-nav]');
+  if (navEl) {
+    e.preventDefault();
+    go(navEl.dataset.nav);
+  }
+  if (e.target.closest('[data-close]')) closeModal();
+  if (e.target.classList.contains('modal-backdrop')) closeModal();
+});
+
+/* =========================================================
+   TOASTS
+   ========================================================= */
+function toast(message, type = '') {
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = message;
+  $('#toastRoot').appendChild(el);
+  setTimeout(() => {
+    el.style.transition = 'opacity .3s, transform .3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(10px)';
+    setTimeout(() => el.remove(), 320);
+  }, 3000);
+}
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+let authMode = 'signup';
+
+$('#switchBtn').addEventListener('click', () => {
+  authMode = authMode === 'signup' ? 'login' : 'signup';
+  const isSignup = authMode === 'signup';
+  $('#authTitle').textContent = isSignup ? 'Create your account' : 'Welcome back';
+  $('#authSub').textContent = isSignup
+    ? 'Start earning from international advertisers today.'
+    : 'Log in to continue earning.';
+  $('#authSubmit').textContent = isSignup ? 'Create account' : 'Log in';
+  $('#switchText').textContent = isSignup ? 'Already have an account?' : 'New to AdPulse?';
+  $('#switchBtn').textContent = isSignup ? 'Log in' : 'Create one';
+  $('#nameField').classList.toggle('hidden', !isSignup);
+  $('#authName').required = isSignup;
+});
+
+$('#authForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#authName').value.trim();
+  const email = $('#authEmail').value.trim();
+  const pass = $('#authPass').value;
+
+  if (!email || pass.length < 6) {
+    toast('Password must be at least 6 characters', 'error');
+    return;
+  }
+  if (authMode === 'signup' && !name) {
+    toast('Please enter your full name', 'error');
+    return;
+  }
+
+  const btn = $('#authSubmit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner dark"></span> Please wait…';
+
+  setTimeout(() => {
+    state.user = { name: name || email.split('@')[0], email };
+    saveState();
+    btn.disabled = false;
+    btn.textContent = authMode === 'signup' ? 'Create account' : 'Log in';
+    toast(`Welcome, ${state.user.name.split(' ')[0]}!`, 'success');
+    go(state.activated ? 'dashboard' : 'activate');
+  }, 700);
+});
+
+$('#logoutBtn').addEventListener('click', () => {
+  state.user = null;
+  saveState();
+  go('landing');
+  toast('You have been logged out');
+});
+
+/* =========================================================
+   ACTIVATION / PAYMENT FLOW
+   ========================================================= */
+$('#activateBtn').addEventListener('click', startActivation);
+
+async function startActivation() {
+  const btn = $('#activateBtn');
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Creating payment request…';
+
+  let res;
+  try {
+    res = await API.initiatePayment({ amount: ACTIVATION_FEE, currency: 'USD', purpose: 'account_activation' });
+  } catch (err) {
+    btn.disabled = false;
+    btn.innerHTML = original;
+    toast('Could not create payment request', 'error');
+    return;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = original;
+  openPayModal(res);
+}
+
+/* Step 1 — payment details. Destination shown as merchant NAME only. */
+function openPayModal(res) {
+  $('#modalRoot').innerHTML = `
+    <div class="modal-backdrop">
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Complete payment">
+        <div class="modal-head">
+          <h3>Complete payment</h3>
+          <button class="icon-btn" data-close aria-label="Close">✕</button>
+        </div>
+
+        <div class="pay-amount">${money(res.amount)}</div>
+        <p class="pay-sub">One-time account activation fee</p>
+
+        <div class="pay-rows">
+          <div class="pay-row"><span>Pay to</span><strong>${escapeHtml(res.payTo.name)}</strong></div>
+          <div class="pay-row"><span>Payment method</span><strong>Mobile Money</strong></div>
+          <div class="pay-row"><span>Reference</span><strong class="mono">${escapeHtml(res.reference)}</strong></div>
+        </div>
+
+        <p class="hint">
+          A payment prompt from <strong>${escapeHtml(res.payTo.name)}</strong> will appear on your phone.
+          Approve it to activate your account. The recipient is always shown as
+          <strong>${escapeHtml(res.payTo.name)}</strong>.
+        </p>
+
+        <button class="btn btn-primary full btn-lg" id="confirmPayBtn">
+          I've approved — verify payment
+        </button>
+        <button class="btn btn-ghost full" data-close>Cancel</button>
+      </div>
+    </div>
+  `;
+
+  $('#confirmPayBtn').addEventListener('click', () => verifyPaymentFlow(res.reference));
+}
+
+/* Step 2 — verifying */
+async function verifyPaymentFlow(reference) {
+  $('#modalRoot').innerHTML = `
+    <div class="modal-backdrop">
+      <div class="modal">
+        <div class="success-state" style="padding-top:24px">
+          <div class="lock-badge" style="animation:spin 1.6s linear infinite">⏳</div>
+          <h3>Confirming payment…</h3>
+          <p>Waiting for ${escapeHtml(SITE_NAME)} to confirm your $2.00 payment.</p>
+          <span class="spinner dark" style="width:22px;height:22px;border-width:3px"></span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  let res;
+  try {
+    res = await API.verifyPayment({ reference });
+  } catch (err) {
+    toast('Verification failed. Please try again.', 'error');
+    closeModal();
+    return;
+  }
+
+  if (!res.ok) {
+    toast('Payment could not be verified', 'error');
+    closeModal();
+    return;
+  }
+
+  /* success */
+  state.activated = true;
+  state.history.unshift({
+    id: uid(),
+    type: 'out',
+    label: 'Account activation fee',
+    amount: ACTIVATION_FEE,
+    date: new Date().toISOString()
+  });
+  saveState();
+  updateChrome();
+  showActivationSuccess();
+}
+
+/* Step 3 — success */
+function showActivationSuccess() {
+  $('#modalRoot').innerHTML = `
+    <div class="modal-backdrop">
+      <div class="modal">
+        <div class="success-state">
+          <div class="success-ring">✓</div>
+          <h3>Account activated</h3>
+          <p>Your payment to <strong>${escapeHtml(SITE_NAME)}</strong> was confirmed.
+             Every campaign and your wallet are now unlocked.</p>
+          <button class="btn btn-success full btn-lg" id="goDash">Go to dashboard</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  $('#goDash').addEventListener('click', () => {
+    closeModal();
+    go('dashboard');
+    toast('Account activated — start earning!', 'success');
+  });
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+function renderDashboard() {
+  $('#dashGreeting').textContent = `Welcome back, ${state.user.name.split(' ')[0]} 👋`;
+
+  const top = CAMPAIGNS
+    .filter(c => !state.completed.includes(c.id))
+    .sort((a, b) => b.pay - a.pay)
+    .slice(0, 3);
+
+  const recent = state.history.slice(0, 4);
+
+  $('#dashBody').innerHTML = `
+    <div class="stat-grid">
+      <div class="stat accent">
+        <span>Wallet balance</span>
+        <strong>${money(state.balance)}</strong>
+      </div>
+      <div class="stat">
+        <span>Lifetime earnings</span>
+        <strong>${money(state.lifetime)}</strong>
+      </div>
+      <div class="stat">
+        <span>Tasks completed</span>
+        <strong>${state.completed.length}</strong>
+      </div>
+      <div class="stat">
+        <span>Available campaigns</span>
+        <strong>${CAMPAIGNS.length - state.completed.length}</strong>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head">
+        <h2>Highest paying right now</h2>
+        <button class="btn btn-outline" data-nav="tasks" style="padding:8px 14px;font-size:12.5px">
+          View all campaigns
+        </button>
+      </div>
+      <div class="campaign-grid">
+        ${top.length ? top.map(campaignCard).join('') : `<div class="empty">You've completed every campaign. New ones are added weekly.</div>`}
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h2>Recent activity</h2></div>
+      ${recent.length ? `<div class="tx-list">${recent.map(txRow).join('')}</div>`
+        : `<div class="empty">No activity yet. Complete your first campaign to see earnings here.</div>`}
+    </div>
+  `;
+
+  bindCampaignButtons();
+}
+
+/* =========================================================
+   TASKS
+   ========================================================= */
+function campaignCard(c) {
+  const done = state.completed.includes(c.id);
+  const isInt = c.region === 'international';
+  return `
+    <article class="campaign">
+      <div class="campaign-top">
+        <div class="camp-avatar" style="background:${brandGradient(c.brand)}">${escapeHtml(c.brand[0])}</div>
+        <span class="badge ${isInt ? 'badge-int' : 'badge-local'}">${isInt ? 'International' : 'Local'}</span>
+      </div>
+      <h3>${escapeHtml(c.title)}</h3>
+      <p class="meta">${escapeHtml(c.brand)} · ${escapeHtml(c.country)}</p>
+      <div class="campaign-foot">
+        <span class="pay-amount ${isInt ? 'high' : ''}">${money(c.pay)}</span>
+        <span class="dur">${c.duration}s watch</span>
+      </div>
+      ${done
+        ? `<button class="btn btn-outline full" disabled>Completed ✓</button>`
+        : `<button class="btn btn-primary full" data-task="${c.id}">Start task</button>`}
+    </article>
+  `;
+}
+
+function renderTasks() {
+  const list = taskFilter === 'all'
+    ? CAMPAIGNS
+    : CAMPAIGNS.filter(c => c.region === taskFilter);
+
+  const sorted = [...list].sort((a, b) => {
+    if (a.region !== b.region) return a.region === 'international' ? -1 : 1;
+    return b.pay - a.pay;
+  });
+
+  $('#taskList').innerHTML = `
+    <div class="campaign-grid">${sorted.map(campaignCard).join('')}</div>
+    <p class="tiny muted center" style="margin-top:24px">
+      International campaigns pay 3–4× more than local campaigns.
+    </p>
+  `;
+
+  bindCampaignButtons();
+}
+
+$$('#taskFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    taskFilter = btn.dataset.filter;
+    $$('#taskFilters .filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderTasks();
+  });
+});
+
+function bindCampaignButtons() {
+  $$('[data-task]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const camp = CAMPAIGNS.find(c => c.id === btn.dataset.task);
+      if (camp) openTaskModal(camp);
+    });
+  });
+}
+
+/* =========================================================
+   TASK MODAL
+   ========================================================= */
+function clearTaskTimer() {
+  if (taskTimerId) { clearInterval(taskTimerId); taskTimerId = null; }
+}
+
+function openTaskModal(camp) {
+  if (state.completed.includes(camp.id)) return;
+
+  let remaining = camp.duration;
+  const total = camp.duration;
+  const isInt = camp.region === 'international';
+
+  $('#modalRoot').innerHTML = `
+    <div class="modal-backdrop">
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Campaign task">
+        <div class="modal-head">
+          <h3>${escapeHtml(camp.brand)}</h3>
+          <button class="icon-btn" data-close aria-label="Close">✕</button>
+        </div>
+
+        <span class="badge ${isInt ? 'badge-int' : 'badge-local'}" style="margin-bottom:14px">
+          ${isInt ? 'International' : 'Local'} · ${escapeHtml(camp.country)}
+        </span>
+
+        <div class="task-ad">
+          <div class="task-ad-art" style="background:${brandGradient(camp.brand)}">
+            ${escapeHtml(camp.title)}
+          </div>
+          <div class="task-ad-copy">${escapeHtml(camp.copy)}</div>
+        </div>
+
+        <div class="progress-track"><div class="progress-fill" id="timerFill"></div></div>
+        <p class="small muted center" id="timerLabel" style="margin:0 0 18px">
+          ${remaining}s remaining
+        </p>
+
+        <button class="btn btn-primary full btn-lg" id="claimBtn" disabled>
+          Watch to unlock
+        </button>
+      </div>
+    </div>
+  `;
+
+  const fill = $('#timerFill');
+  const label = $('#timerLabel');
+  const claim = $('#claimBtn');
+
+  clearTaskTimer();
+  taskTimerId = setInterval(() => {
+    remaining--;
+    const pct = ((total - remaining) / total) * 100;
+    fill.style.width = pct + '%';
+
+    if (remaining > 0) {
+      label.textContent = `${remaining}s remaining`;
+    } else {
+      clearTaskTimer();
+      label.textContent = 'Ready to claim';
+      claim.disabled = false;
+      claim.textContent = `Claim ${money(camp.pay)}`;
+    }
+  }, 1000);
+
+  claim.addEventListener('click', async () => {
+    claim.disabled = true;
+    claim.innerHTML = '<span class="spinner"></span> Crediting…';
+
+    const res = await API.submitTask({ campaignId: camp.id });
+
+    if (!res.ok) {
+      toast(res.error === 'already_completed' ? 'You already completed this campaign' : 'Something went wrong', 'error');
+      closeModal();
+      return;
+    }
+
+    state.completed.push(camp.id);
+    state.balance = Number((state.balance + camp.pay).toFixed(2));
+    state.lifetime = Number((state.lifetime + camp.pay).toFixed(2));
+    state.history.unshift({
+      id: uid(),
+      type: 'in',
+      label: `${camp.brand} — ${camp.title}`,
+      amount: camp.pay,
+      date: new Date().toISOString()
+    });
+    saveState();
+    updateChrome();
+
+    $('#modalRoot').innerHTML = `
+      <div class="modal-backdrop">
+        <div class="modal">
+          <div class="success-state">
+            <div class="success-ring">✓</div>
+            <h3>${money(camp.pay)} credited</h3>
+            <p>Payment from <strong>${escapeHtml(camp.brand)}</strong> has landed in your wallet.</p>
+            <button class="btn btn-success full btn-lg" id="backToTasks">Back to campaigns</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    $('#backToTasks').addEventListener('click', () => {
+      closeModal();
+      if (currentView === 'tasks') renderTasks();
+      else go('dashboard');
+    });
+
+    toast(`${money(camp.pay)} added to your wallet`, 'success');
+  });
+}
+
+/* =========================================================
+   WALLET
+   ========================================================= */
+function txRow(t) {
+  const isIn = t.type === 'in';
+  return `
+    <div class="tx">
+      <div class="tx-icon ${isIn ? 'in' : 'out'}">${isIn ? '↓' : '↑'}</div>
+      <div class="tx-body">
+        <div class="t">${escapeHtml(t.label)}</div>
+        <div class="s">${new Date(t.date).toLocaleString()}</div>
+      </div>
+      <div class="tx-amt ${isIn ? 'in' : 'out'}">${isIn ? '+' : '−'}${money(t.amount)}</div>
+    </div>
+  `;
+}
+
+function renderWallet() {
+  $('#walletBody').innerHTML = `
+    <div class="wallet-hero">
+      <span>Available balance</span>
+      <h2>${money(state.balance)}</h2>
+      <div class="wallet-actions">
+        <button class="btn btn-primary" id="withdrawBtn">Withdraw funds</button>
+        <button class="btn btn-outline" data-nav="tasks">Earn more</button>
+      </div>
+    </div>
+
+    <div class="stat-grid" style="margin-top:20px">
+      <div class="stat">
+        <span>Lifetime earnings</span>
+        <strong>${money(state.lifetime)}</strong>
+      </div>
+      <div class="stat">
+        <span>Tasks completed</span>
+        <strong>${state.completed.length}</strong>
+      </div>
+      <div class="stat">
+        <span>Minimum withdrawal</span>
+        <strong>${money(MIN_WITHDRAWAL)}</strong>
+      </div>
+      <div class="stat">
+        <span>Payout speed</span>
+        <strong style="font-size:19px">1–3 days</strong>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h2>Transaction history</h2></div>
+      ${state.history.length
+        ? `<div class="tx-list">${state.history.map(txRow).join('')}</div>`
+        : `<div class="empty">No transactions yet. Complete a campaign to start earning.</div>`}
+    </div>
+  `;
+
+  $('#withdrawBtn').addEventListener('click', openWithdrawModal);
+}
+
+function openWithdrawModal() {
+  const max = Number(state.balance.toFixed(2));
+  $('#modalRoot').innerHTML = `
+    <div class="modal-backdrop">
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Withdraw funds">
+        <div class="modal-head">
+          <h3>Withdraw funds</h3>
+          <button class="icon-btn" data-close aria-label="Close">✕</button>
+        </div>
+
+        <p class="muted small" style="margin:0 0 16px">
+          Available: <strong style="color:var(--ink)">${money(max)}</strong> ·
+          Minimum withdrawal ${money(MIN_WITHDRAWAL)}
+        </p>
+
+        <div class="field">
+          <label for="wAmount">Amount (USD)</label>
+          <input id="wAmount" type="number" min="${MIN_WITHDRAWAL}" step="0.01"
+                 value="${max >= MIN_WITHDRAWAL ? max.toFixed(2) : ''}" placeholder="10.00" />
+        </div>
+
+        <div class="field">
+          <label for="wMethod">Payout method</label>
+          <select id="wMethod">
+            <option value="mobile_money">Mobile money</option>
+            <option value="bank">Bank transfer</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary full btn-lg" id="confirmWithdraw" style="margin-top:20px">
+          Request withdrawal
+        </button>
+      </div>
+    </div>
+  `;
+
+  $('#confirmWithdraw').addEventListener('click', async () => {
+    const amount = Number($('#wAmount').value);
+    const method = $('#wMethod').value;
+    const btn = $('#confirmWithdraw');
+
+    if (!amount || amount < MIN_WITHDRAWAL) {
+      toast(`Minimum withdrawal is ${money(MIN_WITHDRAWAL)}`, 'error');
+      return;
+    }
+    if (amount > state.balance) {
+      toast('Insufficient balance', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Processing…';
+
+    const res = await API.withdraw({ amount, method });
+    if (!res.ok) {
+      btn.disabled = false;
+      btn.textContent = 'Request withdrawal';
+      toast('Withdrawal failed: ' + res.error, 'error');
+      return;
+    }
+
+    state.balance = Number((state.balance - amount).toFixed(2));
+    state.history.unshift({
+      id: uid(),
+      type: 'out',
+      label: `Withdrawal · ${method === 'bank' ? 'Bank transfer' : 'Mobile money'}`,
+      amount,
+      date: new Date().toISOString()
+    });
+    saveState();
+    updateChrome();
+
+    $('#modalRoot').innerHTML = `
+      <div class="modal-backdrop">
+        <div class="modal">
+          <div class="success-state">
+            <div class="success-ring">✓</div>
+            <h3>Withdrawal requested</h3>
+            <p>${money(amount)} is on its way to your ${method === 'bank' ? 'bank account' : 'mobile money wallet'}.
+               Reference <strong class="mono">${escapeHtml(res.reference)}</strong>.</p>
+            <button class="btn btn-success full btn-lg" id="wDone">Done</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    $('#wDone').addEventListener('click', () => { closeModal(); renderWallet(); });
+    toast('Withdrawal request submitted', 'success');
+  });
+}
+
+/* =========================================================
+   API SANDBOX VIEW
+   ========================================================= */
+const ENDPOINTS = [
+  {
+    method: 'POST',
+    path: '/v1/payments/initiate',
+    desc: 'Creates an activation payment request. Response returns merchant name only — no phone number.',
+    run: () => API.initiatePayment({ amount: ACTIVATION_FEE, currency: 'USD', purpose: 'account_activation' })
+  },
+  {
+    method: 'POST',
+    path: '/v1/payments/verify',
+    desc: 'Confirms the payment prompt was approved and activates the account.',
+    run: () => API.verifyPayment({ reference: 'ADP-SANDBOX' })
+  },
+  {
+    method: 'GET',
+    path: '/v1/campaigns',
+    desc: 'Lists available advertising campaigns with their USD payout and region.',
+    run: () => API.getCampaigns({ region: 'all' })
+  },
+  {
+    method: 'POST',
+    path: '/v1/tasks/submit',
+    desc: 'Submits a completed campaign task and credits the wallet.',
+    run: () => API.submitTask({ campaignId: CAMPAIGNS[0].id })
+  },
+  {
+    method: 'GET',
+    path: '/v1/wallet',
+    desc: 'Returns the current balance, lifetime earnings and completed task count.',
+    run: () => API.getWallet()
+  },
+  {
+    method: 'POST',
+    path: '/v1/withdrawals',
+    desc: 'Requests a payout. Minimum $10.00.',
+    run: () => API.withdraw({ amount: 10, method: 'mobile_money' })
+  }
+];
+
+function renderEndpoints() {
+  $('#endpointList').innerHTML = ENDPOINTS.map((ep, i) => `
+    <div class="endpoint">
+      <span class="method ${ep.method.toLowerCase()}">${ep.method}</span>
+      <code>${escapeHtml(ep.path)}</code>
+      <button class="btn btn-outline" data-run="${i}">Run</button>
+      <span class="desc">${escapeHtml(ep.desc)}</span>
+    </div>
+  `).join('');
+
+  $$('[data-run]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const ep = ENDPOINTS[Number(btn.dataset.run)];
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.innerHTML = '<span class="spinner dark"></span>';
+      try {
+        await ep.run();
+        toast(`${ep.method} ${ep.path.split('?')[0]} → 200 OK`, 'success');
+      } catch (err) {
+        toast('Request failed', 'error');
+      }
+      btn.disabled = false;
+      btn.textContent = original;
+    });
+  });
+}
+
+function renderApiConsole() {
+  const el = $('#apiConsole');
+  if (!el) return;
+
+  if (!API.log.length) {
+    el.innerHTML = '<div class="placeholder">No requests yet — run an endpoint above.</div>';
+    return;
+  }
+
+  el.innerHTML = API.log.map(e => `
+    <div class="log-entry">
+      <div class="log-head">
+        <span class="method ${e.method.toLowerCase()} on-dark">${e.method}</span>
+        <code>${escapeHtml(e.endpoint)}</code>
+        <span class="log-meta">${e.ms}ms · ${escapeHtml(e.ts)}</span>
+      </div>
+      <pre>${escapeHtml(JSON.stringify(e.response, null, 2))}</pre>
+    </div>
+  `).join('');
+}
+
+$('#clearConsole').addEventListener('click', () => {
+  API.log = [];
+  renderApiConsole();
+  toast('Console cleared');
+});
+
+/* =========================================================
+   MODAL CLOSE
+   ========================================================= */
+function closeModal() {
+  clearTaskTimer();
+  $('#modalRoot').innerHTML = '';
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+(function init() {
+  updateChrome();
+  renderApiConsole();
+
+  if (state.user) {
+    go(state.activated ? 'dashboard' : 'activate');
+  } else {
+    go('landing');
+  }
+
+  /* keep console fresh if user navigates to it */
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-nav="api"]')) setTimeout(renderApiConsole, 0);
+  });
+})();
+</script>
+</body>
+</html>
